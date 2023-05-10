@@ -4,10 +4,10 @@ import com.geekster.ECommerce.model.Address;
 import com.geekster.ECommerce.model.Users;
 import com.geekster.ECommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -17,21 +17,21 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public Users createUser(@RequestBody Users user) {
+    public ResponseEntity<Users> createUser(@RequestBody Users user) {
         List<Address> addressList = user.getAddress();
         for(Address address : addressList){
             address.setUser(user);
         }
-        return userService.createUser(user);
+        return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public Optional<Users> getUserById(@PathVariable Long id) {
+    public ResponseEntity<Users> getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
     @GetMapping
-    public List<Users> getAllUsers() {
+    public ResponseEntity<List<Users>> getAllUsers() {
         return userService.getAllUsers();
     }
 }

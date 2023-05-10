@@ -1,7 +1,6 @@
 package com.geekster.ECommerce.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,24 +10,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table
-public class Product {
+public class OrderTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
-
-    @NotBlank
-    private String name;
+    private Integer id;
 
     @NotNull
-    private Integer price;
+    private Integer productQuantity;
 
-    @NotBlank
-    private String description;
 
-    @Enumerated(EnumType.STRING)
-    private Category category;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Users orderUser;
 
-    @NotBlank
-    private String brand;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Product orderProduct;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Address orderAddress;
 }
